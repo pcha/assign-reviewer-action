@@ -24,6 +24,7 @@ number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
 assignee=$(jq --raw-output .assignee.login "$GITHUB_EVENT_PATH")
 
 update_review_request() {
+  echo $reviewers
   body="{\"assignees\":[\"${reviewers}\"]}"
   endpoint="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${number}/requested_reviewers"
 
@@ -39,6 +40,7 @@ update_review_request() {
 echo "PR #$number"
 if [[ "$action" == "review_requested" ]]; then
   echo "Change Assignee"
+  echo "Reviewers: $reviewers"
   update_review_request 'PATCH'
 #elif [[ "$action" == "review_request_removed" ]]; then
 #  update_review_request 'DELETE'
