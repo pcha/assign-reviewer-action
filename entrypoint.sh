@@ -21,7 +21,9 @@ AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
 
 action=$(jq --raw-output .action "$GITHUB_EVENT_PATH")
 number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-assignee=$(jq --raw-output .assignee.login "$GITHUB_EVENT_PATH")
+echo $GITHUB_EVENT_PATH
+echo $(jq --raw-output [.requested_reviewers[].login]|join("\", \"") "$GITHUB_EVENT_PATH")
+reviewers=$(jq --raw-output [.requested_reviewers[].login]|join("\", \"") "$GITHUB_EVENT_PATH")
 
 update_review_request() {
   echo $reviewers
@@ -33,8 +35,8 @@ update_review_request() {
     -H "${AUTH_HEADER}" \
     -H "${API_HEADER}" \
     -X $1 \
-    -d "{\"reviewers\":[\"${assignee}\"]}" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${number}/requested_reviewers"
+    -d $body \
+    $endpoint
 }
 
 echo "PR #$number"
