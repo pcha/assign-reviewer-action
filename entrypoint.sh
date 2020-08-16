@@ -21,7 +21,8 @@ AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
 
 action=$(jq --raw-output .action "$GITHUB_EVENT_PATH")
 number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-echo $GITHUB_EVENT_PATH
+echo "GITHUB_EVENT_PATH:  "
+echo "$GITHUB_EVENT_PATH"
 echo $(jq --raw-output [.requested_reviewers[].login]|join("\", \"") "$GITHUB_EVENT_PATH")
 reviewers=$(jq --raw-output [.requested_reviewers[].login]|join("\", \"") "$GITHUB_EVENT_PATH")
 
