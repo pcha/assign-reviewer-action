@@ -23,11 +23,11 @@ action=$(jq --raw-output .action "$GITHUB_EVENT_PATH")
 number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
 echo "GITHUB_EVENT_PATH:  "
 cat $GITHUB_EVENT_PATH
-reviewers=$(jq --raw-output '[.requested_reviewers[].login]|join("\", \"")' "$GITHUB_EVENT_PATH")
+reviewer=$(jq --raw-output .requested_reviewer.login "$GITHUB_EVENT_PATH")
 
 update_review_request() {
   echo $reviewers
-  body="{\"assignees\":[\"${reviewers}\"]}"
+  body="{\"assignees\":[\"${reviewer}\"]}"
   endpoint="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${number}/requested_reviewers"
 
   curl -sSL \
@@ -42,7 +42,7 @@ update_review_request() {
 echo "PR #$number"
 if [[ "$action" == "review_requested" ]]; then
   echo "Change Assignee"
-  echo "Reviewers: $reviewers"
+  echo "Reviewers: $reviewer"
   update_review_request 'PATCH'
 #elif [[ "$action" == "review_request_removed" ]]; then
 #  update_review_request 'DELETE'
