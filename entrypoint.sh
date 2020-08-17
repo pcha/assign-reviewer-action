@@ -26,6 +26,8 @@ reviewer=$(jq --raw-output .requested_reviewer.login "$GITHUB_EVENT_PATH")
 update_review_request() {
   body="{\"assignees\":[\"${reviewer}\"]}"
   endpoint="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${number}/requested_reviewers"
+  echo $endpoint
+  echo $body
 
   curl -sSL \
     -H "Content-Type: application/json" \
