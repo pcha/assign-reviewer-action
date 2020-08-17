@@ -29,13 +29,15 @@ update_review_request() {
   echo $endpoint
   echo $body
 
-  curl -sSL \
+  request = '-sSL \
     -H "Content-Type: application/json" \
     -H "${AUTH_HEADER}" \
     -H "${API_HEADER}" \
     -X $1 \
     -d $body \
-    $endpoint
+    $endpoint'
+
+  curl $request
 }
 
 echo "PR #$number"
