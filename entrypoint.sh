@@ -28,14 +28,16 @@ update_review_request() {
   endpoint="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${number}/requested_reviewers"
   echo $endpoint
   echo $body
+  echo $AUTH_HEADER
+  echo API_HEADER
 
-  request='-sSL \
-    -H "Content-Type: application/json" \
-    -H "${AUTH_HEADER}" \
-    -H "${API_HEADER}" \
-    -X $1 \
-    -d $body \
-    $endpoint'
+  request="-sSL
+    -H \"Content-Type: application/json\"
+    -H \"${AUTH_HEADER}\"
+    -H \"${API_HEADER}\"
+    -X $1
+    -d $body
+    $endpoint"
   echo $request
 
   curl $request
