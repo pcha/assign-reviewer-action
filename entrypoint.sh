@@ -40,7 +40,13 @@ update_review_request() {
     $endpoint"
   echo $request
 
-  curl $request
+  curl -sSL
+    -H \"Content-Type: application/json\"
+    -H \"${AUTH_HEADER}\"
+    -H \"${API_HEADER}\"
+    -X $1
+    -d $body
+    $endpoint
 }
 
 echo "PR #$number"
