@@ -40,7 +40,7 @@ update_review_request() {
     $endpoint"
   echo $request
 
-  curl -sSL \
+  curl -sSL -vvv \
     -H "Content-Type: application/json" \
     -H "${AUTH_HEADER}" \
     -H "${API_HEADER}" \
